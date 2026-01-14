@@ -3,8 +3,8 @@
   "theme": "maple",
   "name": "TknOps Docs",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
+    "primary": "#056df6",
+    "light": "#f2f7f5",
     "dark": "#15803D"
   },
   "navigation": {
@@ -12,10 +12,7 @@
       "introduction"
     ]
   },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
-  },
+  "logo": "/logo.png",
   "navbar": {
     "links": [
       {
@@ -47,5 +44,9 @@
       "github": "https://github.com/TknOps-io",
       "linkedin": "https://www.linkedin.com/company/tknops"
     }
+  },
+  "favicon": "/images/tknops.png",
+  "appearance": {
+    "default": "light"
   }
 }
