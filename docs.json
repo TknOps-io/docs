@@ -12,7 +12,7 @@
       "introduction"
     ]
   },
-  "logo": "/logo.png",
+  "logo": "/logo/tknops.png",
   "navbar": {
     "links": [
       {
@@ -45,7 +45,7 @@
       "linkedin": "https://www.linkedin.com/company/tknops"
     }
   },
-  "favicon": "/images/tknops.png",
+  "favicon": "/logo/tknops.png",
   "appearance": {
     "default": "light"
   }
