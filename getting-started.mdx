@@ -5,6 +5,8 @@ description: "Add tknOps to your AI application and see your first usage data in
 
 ## 1. Install the SDK
 
+bash
+
 ```
 pip install tknops-llm
 ```
@@ -15,6 +17,8 @@ Grab your API key from the [tknOps Dashboard](https://app.tknops.io/settings/api
 
 ## 3. Initialize the client
 
+python
+
 ```
 from tknops_llm.client import AIAnalytics
 
@@ -23,19 +27,64 @@ client = AIAnalytics(api_key="your_api_key_here")
 
 ## 4. Track your first request
 
-Add one line after your LLM call:
+Wrap your LangChain calls in a function. When the function is called, pass the context as tags:
+
+python
 
 ```
 from langchain_openai import ChatOpenAI
 
+# Initialize once
 llm = ChatOpenAI(model="gpt-4o")
-response = llm.invoke("Hello world!")
 
-# Add this line
-client.track_response(response, user_id="user-123", response_type="langchain")
+# Your service function
+def generate_response(message: str, user_id: str, tags: list[str] = None):
+    response = llm.invoke(message)
+    
+    # Track with whatever context matters to you
+    client.track_response(
+        response=response,
+        user_id=user_id,
+        response_type="langchain",
+        tags=tags or []
+    )
+    
+    return response
 ```
 
-That's it. Head to your [dashboard](https://app.tknops.io/) to see the tracked request.
+Now when your app calls this function, pass the tags that matter:
+
+python
+
+```
+# Called from your chat feature
+generate_response(
+    message="Help me draft an email",
+    user_id="user-123",
+    tags=["chat-feature", "team-sales", "premium-tier"]
+)
+
+# Called from your agent
+generate_response(
+    message="Summarize this document",
+    user_id="user-456",
+    tags=["agent", "team-engineering", "free-tier"]
+)
+```
+
+Head to your [dashboard](https://app.tknops.io) to see costs broken down by any of these tags.
+
+### Tag by what matters to you
+
+| Tag by        | Example                 | See in dashboard     |
+| :------------ | :---------------------- | :------------------- |
+| User          | `user_id="user-123"`    | Cost per customer    |
+| Team          | `tags=["team-sales"]`   | Cost per team        |
+| Feature       | `tags=["chat-feature"]` | Cost per feature     |
+| Customer tier | `tags=["premium-tier"]` | Cost by pricing tier |
+| Environment   | `environment="prod"`    | Prod vs dev spend    |
+
+This is how you find the \$20 customer costing you \$40.
 
 ---
 
@@ -48,7 +97,5 @@ That's it. Head to your [dashboard](https://app.tknops.io/) to see the tracked r
 | Latency | Response time in milliseconds               |
 | User    | Which user made the request                 |
 | Model   | Which model was called                      |
-
-Your prompts and responses are **not collected** by default.
 
 ---
